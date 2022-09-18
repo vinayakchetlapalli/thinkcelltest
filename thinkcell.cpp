@@ -67,7 +67,6 @@ public:
             valueEnd = it->second;
             m_map.erase(it);
         }
-        print(it);
         if(!(vl == val)) {
             m_map.insert(pr);
         }
