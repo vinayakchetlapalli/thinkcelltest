@@ -108,7 +108,7 @@ public:
                 l = 0;
             }
             else {
-                d[k] = it;
+                d[l] = it;
                 l++;
             }
         }
@@ -122,12 +122,16 @@ public:
 
         auto pr = std::make_pair(keyBegin, val);
 
-        auto valueEnd = operator[](keyEnd); //logn
+        auto valueEnd = operator[](keyEnd);
+        auto valueEnd2 = m_valBegin;
 
         std::map<int, typename std::map<K, V>::iterator> dl;
         int k = 0;
-        auto it = m_map.lower_bound(keyBegin);
-
+        auto it = m_map.lower_bound(keyBegin); //log n 
+        
+        cout << "ValueEnd " << valueEnd << endl;
+        if(!m_map.empty()) valueEnd2 = it->second;
+        cout << "ValueEnd2 " << valueEnd2 << endl;
         while(it != m_map.end() && it->first < keyEnd) {
             dl[k] = it;
             k++;
@@ -136,11 +140,20 @@ public:
         for(int i = 0; i < dl.size(); i++) {
             m_map.erase(dl[i]); // because it is iterators each is constant 
         }
+        if(!dl.empty()) valueEnd2 = dl.rbegin()->second->second;
+        cout << "ValueEnd " << valueEnd << endl;
+        cout << "ValueEnd2 " << valueEnd2 << endl;
+
         m_map.emplace_hint(it, pr); //logn without hint 
-
-        auto last = std::make_pair(keyEnd, valueEnd);
-        if(!(operator[](keyEnd) == valueEnd)) m_map.emplace_hint(it, last); // logn without hint
-
+        cout << endl;
+        cout << "Inserting" << endl;
+        cout << "ValueEnd " << valueEnd << endl;
+        cout << "ValueEnd2 " << valueEnd2 << endl;
+        auto last = std::make_pair(keyEnd, valueEnd2);
+        /* calling logn for check */ if(!(operator[](keyEnd) == valueEnd)) m_map.emplace_hint(it, last); // logn without hint
+        cout << "=======" << endl;
+        cout << "ValueEnd " << operator[](keyEnd) << endl;
+        cout << "ValueEnd2 " << valueEnd2 << endl;
         while(m_map.begin()->second == m_valBegin) m_map.erase(m_map.begin());
         
         if(m_map.empty()) return;
@@ -160,7 +173,7 @@ public:
                 l = 0;
             }
             else {
-                d[k] = it;
+                d[l] = it;
                 l++;
             }
         }
