@@ -109,7 +109,7 @@ void IntervalMapTest() {
     m.print();
     m.assign(0, 5, '2');
     m.print();
-    m.assign(0, 25, 'A');
+    m.assign(2, 25, 'A');
     m.print();
 
 }
